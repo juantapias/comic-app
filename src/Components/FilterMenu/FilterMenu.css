@@ -1,0 +1,13 @@
+.container-filter-list {
+  background: #c9c9c9;
+}
+.grid-filter-list {
+  display: flex;
+  justify-content: flex-end;
+}
+.item-filter {
+  display: flex;
+}
+.item-filter:first-child {
+  margin-right: 15px;
+}
