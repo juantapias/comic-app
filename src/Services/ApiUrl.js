@@ -1,3 +1,3 @@
-const ApiUrl = "https://comicvine.gamespot.com/api"
+const ApiUrl = "https://comicvine.gamespot.com/api";
 
 export default ApiUrl;

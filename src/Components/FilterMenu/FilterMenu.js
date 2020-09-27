@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import './FilterMenu.css';
 //Material components
 import Box from '@material-ui/core/Box/Box';
@@ -8,9 +8,20 @@ import Typography from '@material-ui/core/Typography/Typography';
 //MaterialIcon components
 import GridOnIcon from '@material-ui/icons/GridOn';
 import ViewListIcon from '@material-ui/icons/ViewList';
-
+//Global state
+import FilterState from '../../Interfaces/Interfaces';
 
 const FilterList = () => {
+  const { filterList, setFilterList } = useContext(FilterState);
+
+  const handleFilterMenu = () => {
+    if (filterList) {
+      setFilterList(false);
+    } else {
+      setFilterList(true);
+    }
+  }
+
   return (
     <Fragment>
       <Container className="container-filter-list">
@@ -20,8 +31,8 @@ const FilterList = () => {
           </Grid>
           <Grid item xs={6} lg={6}>
             <Box display="flex" justifyContent="flex-end">
-              <Typography className="item-filter"><ViewListIcon /> List</Typography>
-              <Typography className="item-filter"><GridOnIcon /> Grid</Typography>
+              <Typography className="item-filter" onClick={handleFilterMenu}><ViewListIcon /> List</Typography>
+              <Typography className="item-filter" onClick={handleFilterMenu}><GridOnIcon /> Grid</Typography>
             </Box>
           </Grid>
         </Grid>

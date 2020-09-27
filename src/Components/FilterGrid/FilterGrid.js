@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import Moment from 'react-moment';
+import { useHistory } from 'react-router-dom';
 //Material components
 import Card from '@material-ui/core/Card/Card';
 import CardActionArea from '@material-ui/core/CardActionArea/CardActionArea';
@@ -12,23 +13,26 @@ import Typography from '@material-ui/core/Typography/Typography';
 //Api resource
 import UseFetch from '../../Hooks/UseFetch';
 import ApiUrl from '../../Services/ApiUrl';
+import TokenApiUrl from '../../Services/TokenApiUrl';
+import FormatApiUrl from '../../Services/FormatApiUrl';
 //App components
 import Loading from '../../Components/Loading/Loading';
 
 const useStyles = makeStyles({
   media: {
     backgroundSize: "cover",
-    height: 240,
+    height: 330,
     maxWidth: "100%",
   },
 });
 
 const FilterGrid = () => {
   const classes = useStyles();
-  const { data, loading } = UseFetch(`${ApiUrl}/issues/?api_key=6f7e42c1a04a1903ca5c2a635e441781e12a537b&format=json`);
+  const history = useHistory();
+  const { data, loading } = UseFetch(`${ApiUrl}/issues/${TokenApiUrl}${FormatApiUrl}`);
 
-  const singleComic = () => {
-    console.log("single");
+  const singleComic = (id) => {
+    history.push(`/comic/${id}`);
   }
 
   if ( loading )
@@ -38,14 +42,17 @@ const FilterGrid = () => {
     return (
       <Fragment>
         <Container>
-          <Grid container item xs={12} spacing={5}>
-            { data &&
+          <Grid container item xs={12} spacing={2}>
+            {
               data.results.map( ( item, index ) => {
                 let name = Object.values(item.volume)[2];
                 let thumbnail = Object.values(item.image)[1];
                 let dateToFormat = item.date_added;
+                let detailComic = item.api_detail_url;
+                let comicId = detailComic.split('/');
+                comicId = comicId[5];
                 return (
-                  <Grid item xs={6} sm={4} md={3} lg={2} key={index} onClick={singleComic}>
+                  <Grid item xs={6} sm={4} md={3} lg={2} key={index} onClick={() => singleComic(comicId)}>
                     <Card>
                       <CardActionArea>
                         <CardMedia
