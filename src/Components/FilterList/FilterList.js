@@ -17,20 +17,25 @@ import TokenApiUrl from '../../Services/TokenApiUrl';
 import FormatApiUrl from '../../Services/FormatApiUrl';
 //App components
 import Loading from '../../Components/Loading/Loading';
+import ConnectionError from '../ConnectionError/ConnectionError';
+import EmptyFilter from '../EmptyFilter/EmptyFilter';
 
 const useStyles = makeStyles({
+  card: {
+    marginBottom: 10,
+  },
   media: {
     backgroundPosition: "left center",
     backgroundSize: "contain",
-    height: 160,
+    height: 140,
     maxWidth: "100%",
   },
 });
 
-const FilterList = () => {
+const FilterList = ({search}) => {
   const classes = useStyles();
   const history = useHistory();
-  const { data, loading } = UseFetch(`${ApiUrl}/issues/${TokenApiUrl}${FormatApiUrl}`);
+  const { data, loading, error } = UseFetch(`${ApiUrl}/issues/${TokenApiUrl}${FormatApiUrl}`);
 
   const singleComic = (id) => {
     history.push(`/comic/${id}`);
@@ -39,42 +44,53 @@ const FilterList = () => {
   if ( loading )
     return <Loading />
 
+  if ( error )
+    return <ConnectionError />
+
+  const filterComic = data.results.filter((data) => {
+    return data.volume.name.toLowerCase().includes(search.toLowerCase())
+  })
+
   return (
     <Fragment>
       <Container>
-        <Grid container item xs={12} spacing={2}>
+        <Grid container item xs={12}>
         {
-          data.results.map( ( item, index ) => {
-            let name = Object.values(item.volume)[2];
-            let thumbnail = Object.values(item.image)[1];
-            let dateAdded = item.date_added;
-            let detailComic = item.api_detail_url;
-            let comicId = detailComic.split('/');
-                comicId = comicId[5];
+          filterComic.length
+          ?
+            filterComic.map( ( item, index ) => {
+              let name = Object.values(item.volume)[2];
+              let thumbnail = Object.values(item.image)[1];
+              let dateAdded = item.date_added;
+              let detailComic = item.api_detail_url;
+              let comicId = detailComic.split('/');
+                  comicId = comicId[5];
 
-            return (
-              <Grid item xs={12} key={index} onClick={() => singleComic(comicId)}>
-                <Card>
-                  <CardActionArea>
-                    <Grid container>
-                      <Grid item xs={6} sm={2}>
-                        <CardMedia
-                          className={classes.media}
-                          image={thumbnail}
-                        />
+              return (
+                <Grid item xs={12} key={index} onClick={() => singleComic(comicId)}>
+                  <Card className={classes.card}>
+                    <CardActionArea>
+                      <Grid container>
+                        <Grid item xs={3} sm={2} lg={1}>
+                          <CardMedia
+                            className={classes.media}
+                            image={thumbnail}
+                          />
+                        </Grid>
+                        <Grid item xs={9} sm={10} lg={11}>
+                          <CardContent>
+                            <Typography variant="h6">{name} #{item.issue_number}</Typography>
+                            <Typography><Moment format="MMM DD, YYYY">{dateAdded}</Moment></Typography>
+                          </CardContent>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={6} sm={10}>
-                        <CardContent>
-                          <Typography variant="h6">{name} #{item.issue_number}</Typography>
-                          <Typography><Moment format="MMM DD, YYYY">{dateAdded}</Moment></Typography>
-                        </CardContent>
-                      </Grid>
-                    </Grid>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            )
-          })
+                    </CardActionArea>
+                  </Card>
+                </Grid>
+              )
+            })
+          :
+          <EmptyFilter />
         }
         </Grid>
       </Container>

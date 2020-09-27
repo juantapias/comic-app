@@ -1,12 +1,21 @@
-.container-filter-list {
-  background: #c9c9c9;
-}
-.grid-filter-list {
+.box-filter-list {
+  align-items: center;
+  background: #fff;
+  border-radius: 25px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .4);
   display: flex;
-  justify-content: flex-end;
+  height: 35px;
+  margin-bottom: 15px;
+  justify-content: space-between;
+  padding: 15px;
 }
 .item-filter {
+  cursor: pointer;
   display: flex;
+  transition: color .3s ease;
+}
+.item-filter:hover {
+  color: #4fbfda;
 }
 .item-filter:first-child {
   margin-right: 15px;

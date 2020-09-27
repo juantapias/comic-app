@@ -5,9 +5,10 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
   media: {
-    backgroundPosition: "right center",
+    backgroundPosition: "center center",
     backgroundSize: "contain",
     height: 510,
+    marginTop: "10px",
     maxWidth: "100%",
   },
 });

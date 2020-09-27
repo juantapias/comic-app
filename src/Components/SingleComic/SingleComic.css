@@ -1,0 +1,15 @@
+.title-comic {
+  background: #fff;
+  border-radius: 25px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+  padding: 15px;
+}
+.box-content-comic {
+  margin: 15px auto;
+}
+
+@media (max-width: 600px) {
+  .grid-content{
+    order: 1;
+  }
+}
