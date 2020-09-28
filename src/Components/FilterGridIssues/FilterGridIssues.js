@@ -16,8 +16,9 @@ import ApiUrl from '../../Services/ApiUrl';
 import TokenApiUrl from '../../Services/TokenApiUrl';
 import FormatApiUrl from '../../Services/FormatApiUrl';
 //App components
-import Loading from '../../Components/Loading/Loading';
+import Loading from '../Loading/Loading';
 import ConnectionError from '../ConnectionError/ConnectionError';
+import EmptyFilter from '../EmptyFilter/EmptyFilter';
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const FilterGrid = ({search}) => {
+const FilterGridIssues = ({search}) => {
   const classes = useStyles();
   const history = useHistory();
   const { data, loading, error } = UseFetch(`${ApiUrl}/issues/${TokenApiUrl}${FormatApiUrl}`);
@@ -56,41 +57,43 @@ const FilterGrid = ({search}) => {
     return data.volume.name.toLowerCase().includes(search.toLowerCase())
   })
 
-  if ( data )
-    return (
-      <Fragment>
-        <Container>
-          <Grid container item xs={12} spacing={2}>
-            {
-              filterComic.map( ( item, index ) => {
-                let name = Object.values(item.volume)[2];
-                let thumbnail = Object.values(item.image)[1];
-                let dateToFormat = item.date_added;
-                let detailComic = item.api_detail_url;
-                let comicId = detailComic.split('/');
-                comicId = comicId[5];
-                return (
-                  <Grid item xs={6} sm={4} md={3} lg={2} key={index} onClick={() => singleComic(comicId)}>
-                    <Card>
-                      <CardActionArea>
-                        <CardMedia
-                          className={classes.media}
-                          image={thumbnail}
-                        />
-                        <CardContent className={classes.root}>
-                          <Typography variant="subtitle1" align="center">{name} #{item.issue_number}</Typography>
-                          <Typography variant="caption" align="center"><Moment format="MMM DD, YYYY">{dateToFormat}</Moment></Typography>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  </Grid>
-                );
-              })
-            }
-          </Grid>
-        </Container>
-      </Fragment>
-    );
+  return (
+    <Fragment>
+      <Container>
+        <Grid container item xs={12} spacing={2}>
+          {
+            filterComic.length
+            ?
+            filterComic.map( ( item, index ) => {
+              let dateToFormat = item.date_added;
+              let detailComic = item.api_detail_url;
+              let comicId = detailComic.split('/');
+                  comicId = comicId[5];
+
+              return (
+                <Grid item xs={6} sm={4} md={3} lg={2} key={index} onClick={() => singleComic(comicId)}>
+                  <Card>
+                    <CardActionArea>
+                      <CardMedia
+                        className={classes.media}
+                        image={item.image.original_url}
+                      />
+                      <CardContent className={classes.root}>
+                        <Typography variant="subtitle1" align="center">{item.volume.name} #{item.issue_number}</Typography>
+                        <Typography variant="caption" align="center"><Moment format="MMM DD, YYYY">{dateToFormat}</Moment></Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Grid>
+              );
+            })
+            :
+              <EmptyFilter message="There's not any comic with this name" />
+          }
+        </Grid>
+      </Container>
+    </Fragment>
+  );
 }
 
-export default FilterGrid;
+export default FilterGridIssues;

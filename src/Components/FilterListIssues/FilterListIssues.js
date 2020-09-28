@@ -16,7 +16,7 @@ import ApiUrl from '../../Services/ApiUrl';
 import TokenApiUrl from '../../Services/TokenApiUrl';
 import FormatApiUrl from '../../Services/FormatApiUrl';
 //App components
-import Loading from '../../Components/Loading/Loading';
+import Loading from '../Loading/Loading';
 import ConnectionError from '../ConnectionError/ConnectionError';
 import EmptyFilter from '../EmptyFilter/EmptyFilter';
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   },
 });
 
-const FilterList = ({search}) => {
+const FilterListIssues = ({search}) => {
   const classes = useStyles();
   const history = useHistory();
   const { data, loading, error } = UseFetch(`${ApiUrl}/issues/${TokenApiUrl}${FormatApiUrl}`);
@@ -59,8 +59,6 @@ const FilterList = ({search}) => {
           filterComic.length
           ?
             filterComic.map( ( item, index ) => {
-              let name = Object.values(item.volume)[2];
-              let thumbnail = Object.values(item.image)[1];
               let dateAdded = item.date_added;
               let detailComic = item.api_detail_url;
               let comicId = detailComic.split('/');
@@ -74,12 +72,12 @@ const FilterList = ({search}) => {
                         <Grid item xs={3} sm={2} lg={1}>
                           <CardMedia
                             className={classes.media}
-                            image={thumbnail}
+                            image={item.image.original_url}
                           />
                         </Grid>
                         <Grid item xs={9} sm={10} lg={11}>
                           <CardContent>
-                            <Typography variant="h6">{name} #{item.issue_number}</Typography>
+                            <Typography variant="h6">{item.volume.name} #{item.issue_number}</Typography>
                             <Typography><Moment format="MMM DD, YYYY">{dateAdded}</Moment></Typography>
                           </CardContent>
                         </Grid>
@@ -90,7 +88,7 @@ const FilterList = ({search}) => {
               )
             })
           :
-          <EmptyFilter />
+            <EmptyFilter message="There's not any comic with this name" />
         }
         </Grid>
       </Container>
@@ -98,4 +96,4 @@ const FilterList = ({search}) => {
   );
 }
 
-export default FilterList;
+export default FilterListIssues;

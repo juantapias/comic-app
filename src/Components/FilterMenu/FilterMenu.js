@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 });
 
 
-const FilterList = () => {
+const FilterList = ({titleFilter}) => {
   const classes = useStyles();
   const { filterList, setFilterList } = useContext(FilterState);
 
@@ -38,7 +38,7 @@ const FilterList = () => {
         <Box className="box-filter-list">
           <Grid container item xs={12} className="grid-filter-list">
             <Grid item xs={6} lg={6}>
-              <Typography variant="h6" className={classes.h6}>Latest Issues</Typography>
+              <Typography variant="h6" className={classes.h6}>{titleFilter}</Typography>
             </Grid>
             <Grid item xs={6} lg={6}>
               <Box display="flex" justifyContent="flex-end">

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 //Material components
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import HourglassFullIcon from '@material-ui/icons/HourglassFull';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -27,7 +27,7 @@ const Footer = () => {
         showLabels
       >
         <BottomNavigationAction component={Link} to="/" label="Issue" icon={<ImportContactsIcon />}/>
-        <BottomNavigationAction component={Link} to="/character" label="Other" icon={<HourglassFullIcon /> } />
+        <BottomNavigationAction component={Link} to="/characters" label="Characters" icon={<AssignmentIndIcon /> } />
       </BottomNavigation>
     </Fragment>
   );

@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid/Grid';
 import Typography from '@material-ui/core/Typography/Typography';
 import WarningIcon from '@material-ui/icons/Warning';
 
-const ConnectionError = () => {
+const ConnectionError = ({message}) => {
   return (
     <Fragment>
       <Container>
@@ -15,7 +15,7 @@ const ConnectionError = () => {
           <Box className="box-empty-filter">
             <Grid item xs={12}>
               <Typography align="center"><WarningIcon fontSize="large" /></Typography>
-              <Typography variant="h3" align="center">There's not any comic with this name</Typography>
+              <Typography variant="h3" align="center">{message}</Typography>
             </Grid>
           </Box>
         </Grid>
